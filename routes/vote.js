@@ -17,7 +17,7 @@ function andRestrictTo(role) {
 
 module.exports = function(app) {
     app.get('/vote/list', function(req, res) {
-                res.render('list', { title: 'Test!', pretty: false });
+                res.render('list', { title: 'Test!', pretty: app.get('pretty') });
             });
 
     app.get('/vote/admin', function(req, res) {
@@ -25,6 +25,6 @@ module.exports = function(app) {
             });
 
     app.get('/vote/admin/list', function(req, res) {
-                res.render('admin/list', { title: 'Test!', pretty: false });
+                res.render('admin/list', { title: 'Test!', pretty: app.get('pretty') });
             });
 };

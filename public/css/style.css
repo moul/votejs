@@ -1,0 +1,10 @@
+#menu {
+  background: green;
+  float: right;
+  padding: 40px;
+}
+
+#content {
+  background: red;
+  float: left;
+}

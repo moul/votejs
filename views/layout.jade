@@ -2,12 +2,14 @@
 html(lang="en")
   head
     title= title
-    link(href="/static/css/style.css", media="screen", rel="stylesheet", type="text/css")
-    script(src="/static/js/jquery.min.js", type="application/javascript")
+    //link(href="/public/css/reset.css", media="screen", rel="stylesheet", type="text/css")
+    link(href="/public/css/style.css", media="screen", rel="stylesheet", type="text/css")
+    script(src="jquery.js", type="application/javascript")
   body
-    ul(id="menu")
-      li
-        a(href="/vote/list") list
-      li
-        a(href="/vote/admin") admin
-    div!= body
+    header#site-header
+      nav#site-navigation!= partial("partials/navigation")
+    section#page-content
+      h1#page-title #{title}
+      != body
+    footer#page-footer
+
