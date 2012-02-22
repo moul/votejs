@@ -6,6 +6,6 @@ $(document).ready(function() {
     });
 
     socket.on('welcome', function(msg) {
-      consooe.info('welcome', msg);
+      console.info('welcome', msg);
     });
-});  
+});
