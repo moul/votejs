@@ -67,9 +67,8 @@ require('./routes/site')(app, db);
 require('./routes/vote')(app, db);
 
 if (!module.parent) {
-    var port = 3000;
-    app.listen(port);
-    console.log('Express started on port ' + port);
+    app.listen(config.server.port, config.server.address);
+    console.log('Express started on ' + config.server.address + ':' + config.server.port);
 }
 
 /*io.sockets.on('connection', function(socket) {

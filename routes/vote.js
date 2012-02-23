@@ -1,5 +1,3 @@
-console.log('test');
-
 var basicAuth = require('express').basicAuth,
 Vote = require('../models/vote');
 
