@@ -1,4 +1,4 @@
-var db = {};
+//var db = db.votes;
 
 var Vote = exports = module.exports = function Vote(id, title, options) {
     thid.id = id;

@@ -1,3 +1,5 @@
+console.log('test');
+
 var basicAuth = require('express').basicAuth,
 Vote = require('../models/vote');
 
@@ -17,7 +19,7 @@ function andRestrictTo(role) {
 
 module.exports = function(app) {
     app.get('/vote/list', function(req, res) {
-                res.render('list', { title: 'Test!', pretty: app.get('pretty') });
+                res.render('list', { title: 'Test!' });
             });
 
     app.get('/vote/admin', function(req, res) {
@@ -25,6 +27,6 @@ module.exports = function(app) {
             });
 
     app.get('/vote/admin/list', function(req, res) {
-                res.render('admin/list', { title: 'Test!', pretty: app.get('pretty') });
+                res.render('admin/list', { title: 'Test!' });
             });
 };

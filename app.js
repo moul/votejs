@@ -4,9 +4,40 @@ var express = require('express'),
   db = {
       users: [
           { id: 0, name: 'admin', email: 'm@42.am', role: 'admin' }
+      ],
+      votes: [
+          {
+              id: "test123",
+              choices: {
+                  "test": 123,
+                  "test2": 1234,
+                  "test3": 12,
+                  "test4": 14
+              }
+          }, {
+              id: "blah",
+              choices: {
+                  "aaa": 0,
+                  "bbb": 0,
+                  "ccc": 0,
+                  "ddd": 0
+              }
+          }
       ]
   };
 
+
+app.configure('development', function() {
+                  app.set('jquery.js', '/public/js/jquery.min.js');
+                  app.set('scriptio.js', '/public/js/socket.io.min.js');
+                  app.set('pretty', true);
+              });
+
+app.configure('production', function() {
+                  app.set('jquery.js', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+                  app.set('scriptio.js', '/public/js/socket.io.min.js');
+                  app.set('pretty', false);
+              });
 
 app.configure(function() {
                   app.set('views', __dirname + '/views');
@@ -24,14 +55,16 @@ app.configure(function() {
 
                   app.use(express.cookieParser('keyboard cat'));
                   app.use(express.session({ secret: "keyboard cat" }));
+
+                  app.set('view options', {
+                              jqueryjs: app.set('jquery.js'),
+                              pretty: app.set('pretty')
+                          });
 });
 
 app.configure('development', function() {
                   app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
-                  app.set('jquery.js', '/public/js/jquery.min.js');
-                  app.set('scriptio.js', '/public/js/socket.io.min.js');
-                  app.set('pretty', true);
-              });
+});
 
 app.configure('production', function() {
                   app.use(express.errorHandler());
