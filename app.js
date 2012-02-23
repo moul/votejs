@@ -1,31 +1,10 @@
 var express = require('express'),
   app = express.createServer(),
+  config = require('./config'),
   io = require('socket.io').listen(app),
-  db = {
-      users: [
-          { id: 0, name: 'admin', email: 'm@42.am', role: 'admin' }
-      ],
-      votes: [
-          {
-              id: "test123",
-              choices: {
-                  "test": 123,
-                  "test2": 1234,
-                  "test3": 12,
-                  "test4": 14
-              }
-          }, {
-              id: "blah",
-              choices: {
-                  "aaa": 0,
-                  "bbb": 0,
-                  "ccc": 0,
-                  "ddd": 0
-              }
-          }
-      ]
-  };
-
+  mongoose = require('mongoose'),
+  db = mongoose.connect(config.mongo.db),
+  Schema = mongoose.Schema;
 
 app.configure('development', function() {
                   app.set('jquery.js', '/public/js/jquery.min.js');
