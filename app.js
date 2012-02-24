@@ -18,8 +18,8 @@ Server.setup = require('./lib/setup.js').setup({
                                                    config: config,
                                                    paths: {
                                                        views: path.join(Server.root, 'app', 'views'),
-                                                       root: path.join(Server.root, 'app', 'public'),
                                                        controllers: path.join(Server.root, 'app', 'controllers'),
+                                                       root: path.join(Server.root, 'public'),
                                                        models: path.join(Server.root, 'app', 'models')
                                                    }
                                                });
