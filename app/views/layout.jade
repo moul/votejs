@@ -11,8 +11,9 @@ html.no-js(lang="en")
     link(href="/apple-touch-icon.png", rel="apple-touch-icon")
     link(href="/css/style.css", media="screen", rel="stylesheet", type="text/css")
     link(href="/css/site.css", media="screen", rel="stylesheet", type="text/css")
-    script(src=jqueryjs, type="application/javascript")
+    script(src="/js/libs/modernizr-1.6.min.js", type="application/javascript")
   body
+    script(src="js/lib/jquery-1.7.min.js", type="application/javascript")
     header#site-header
       nav#site-navigation!= partial("partials/navigation")
     section#page-content
