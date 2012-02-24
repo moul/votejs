@@ -15,6 +15,7 @@ Server.setup = require('./lib/setup.js').setup({
                                                    mongoose: require('mongoose'),
                                                    io: require('socket.io'),
                                                    express: express,
+                                                   config: config,
                                                    paths: {
                                                        views: path.join(Server.root, 'app', 'views'),
                                                        root: path.join(Server.root, 'app', 'public'),
