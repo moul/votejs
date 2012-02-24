@@ -1,4 +1,4 @@
-require('./lib/underscore/underscore');
+_ = require('./lib/underscore/underscore');
 
 var Server = {},
 express = require('express'),
