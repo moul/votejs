@@ -1,4 +1,4 @@
-$(document).ready(function() {
+if (0) $(document).ready(function() {
     var socket = io.connect();
 
     socket.on('connect', function() {
