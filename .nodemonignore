@@ -1,4 +1,4 @@
 /public/*
-./README.md
+.git/*
+*.md
 *.css
-./.git/*
