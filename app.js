@@ -1,3 +1,29 @@
+require('./lib/underscore/underscore');
+
+var Server = {},
+express = require('express'),
+path = require('path'),
+sys = require('sys'),
+config = require('./config');
+
+Server.root = __dirname,
+global.Server = Server,
+global.app = express.createServer();
+
+Server.setup = require('./lib/setup.js').setup({
+                                                   app: app,
+                                                   mongoose: require('mongoose'),
+                                                   io: require('socket.io'),
+                                                   express: express,
+                                                   paths: {
+                                                       views: path.join(Server.root, 'app', 'views'),
+                                                       root: path.join(Server.root, 'app', 'public'),
+                                                       controllers: path.join(Server.root, 'app', 'controllers'),
+                                                       models: path.join(Server.root, 'app', 'models')
+                                                   }
+                                               });
+
+/*
 var express = require('express'),
   app = express.createServer(),
   config = require('./config'),
@@ -5,49 +31,6 @@ var express = require('express'),
   mongoose = require('mongoose'),
   db = mongoose.connect(config.mongo.db),
   Schema = mongoose.Schema;
-
-app.configure('development', function() {
-                  app.set('jquery.js', '/public/js/jquery.min.js');
-                  app.set('scriptio.js', '/public/js/socket.io.min.js');
-                  app.set('pretty', true);
-              });
-
-app.configure('production', function() {
-                  app.set('jquery.js', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
-                  app.set('scriptio.js', '/public/js/socket.io.min.js');
-                  app.set('pretty', false);
-              });
-
-app.configure(function() {
-                  app.set('views', __dirname + '/views');
-                  app.set('view engine', 'jade');
-
-                  app.use('/public', express.static(__dirname + '/public'));
-                  app.use(app.router);
-
-                  app.use(checkRequestHeaders);
-                  app.use(express.bodyParser());
-                  app.use(checkRequestData);
-                  app.use(express.methodOverride());
-
-                  app.use(express.logger({ format: ':method :url' }));
-
-                  app.use(express.cookieParser('keyboard cat'));
-                  app.use(express.session({ secret: "keyboard cat" }));
-
-                  app.set('view options', {
-                              jqueryjs: app.set('jquery.js'),
-                              pretty: app.set('pretty')
-                          });
-});
-
-app.configure('development', function() {
-                  app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
-});
-
-app.configure('production', function() {
-                  app.use(express.errorHandler());
-});
 
 function checkRequestHeaders(req, res, next) {
     if (!req.accepts('application/json')) {
@@ -66,10 +49,18 @@ function checkRequestData(req, res, next) {
 require('./routes/site')(app, db);
 require('./routes/vote')(app, db);
 
-if (!module.parent) {
-    app.listen(config.server.port, config.server.address);
-    console.log('Express started on ' + config.server.address + ':' + config.server.port);
-}
+
+*/
+
+
+
+
+
+
+
+
+
+
 
 /*io.sockets.on('connection', function(socket) {
                   console.log('new connection');
