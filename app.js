@@ -26,44 +26,6 @@ Server.setup = require('./lib/setup.js').setup({
                                                    }
                                                });
 
-/*
-var express = require('express'),
-  app = express.createServer(),
-  config = require('./config'),
-  io = require('socket.io').listen(app),
-  mongoose = require('mongoose'),
-  db = mongoose.connect(config.mongo.db),
-  Schema = mongoose.Schema;
-
-function checkRequestHeaders(req, res, next) {
-    if (!req.accepts('application/json')) {
-        return res.respond('You must accept content-type application/json', 406);
-    }
-    if ((req.method == "PUT" || req.method == "POST") && req.header('content-type') != 'application/json') {
-        return res.respond('You must declare your content-type as application/json', 406);
-    }
-    return next();
-};
-
-function checkRequestData(req, res, next) {
-    next();
-}
-
-require('./routes/site')(app, db);
-require('./routes/vote')(app, db);
-
-
-*/
-
-
-
-
-
-
-
-
-
-
 
 /*io.sockets.on('connection', function(socket) {
                   console.log('new connection');
