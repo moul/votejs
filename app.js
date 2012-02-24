@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 _ = require('./lib/underscore/underscore');
 
 var Server = {},
