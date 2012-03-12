@@ -2,14 +2,15 @@
  * Load dependencies
  */
 const mongoose = require('mongoose');
-//require('express-mongoose');
+require('express-mongoose');
 
 /**
  * Exports
  */
 module.exports = function() {
     // Load Vote model
-    //mongoose.model('Vote', require('../app/models/vote'));
+    mongoose.model('Vote', require('../app/models/vote'));
+    mongoose.model('Poll', require('../app/models/poll'));
 };
 
 /*

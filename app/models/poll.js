@@ -7,7 +7,7 @@ const Schema = require('mongoose').Schema
 /**
  * Exports
  */
-var Vote = module.exports = new Schema({
+var Poll = module.exports = new Schema({
                                            title: { type: String, required: true },
                                            options: { type: String, required: true, default: '{}' },
                                            date_created: { type: Date, default: Date.now },
@@ -19,7 +19,7 @@ var Vote = module.exports = new Schema({
 /**
  * Statics
  */
-Vote.statics.getLatestVotes = function(callback) {
+Poll.statics.getLatestPolls = function(callback) {
     return this.find().sort('_id', 'descending').limit(15).find({}, callback);
 };
 
@@ -27,19 +27,19 @@ Vote.statics.getLatestVotes = function(callback) {
  * Hooks
  */
 // this happens before it saves
-Vote.pre('save', function(next) {
+Poll.pre('save', function(next) {
              console.log('Saving...');
              next();
          });
 
 // this happens before it removes
-Vote.pre('remove', function(next) {
+Poll.pre('remove', function(next) {
              console.log('Removing...');
              next();
          });
 
 // This happens when it initializes
-Vote.pre('init', function(next) {
+Poll.pre('init', function(next) {
              console.log('Initializing...');
              next();
          });
@@ -47,9 +47,9 @@ Vote.pre('init', function(next) {
 /**
  * Old code
  */
-/*//var db = db.votes;
+/*//var db = db.polls;
 
-var Vote = exports = module.exports = function Vote(id, title, options) {
+var Poll = exports = module.exports = function Poll(id, title, options) {
     thid.id = id;
     this.title = title;
     this.options = options;
@@ -57,13 +57,13 @@ var Vote = exports = module.exports = function Vote(id, title, options) {
     this.version = 0;
 };
 
-Vote.prototype.save = function(fn) {
+Poll.prototype.save = function(fn) {
     this.version += 1;
     db[this.id] = this;
     fn();
 };
 
-Vote.prototype.validate = function(fn) {
+Poll.prototype.validate = function(fn) {
     if (!this.id) {
         return fn(new Error('id required'));
     }
@@ -79,7 +79,7 @@ Vote.prototype.validate = function(fn) {
     fn();
 };
 
-Vote.prototype.update = function(data, fn) {
+Poll.prototype.update = function(data, fn) {
     this.updatedAt = new Date;
     for (var key in data) {
         if (undefined != data[key]) {
@@ -89,7 +89,7 @@ Vote.prototype.update = function(data, fn) {
     this.save(fn);
 };
 
-Vote.prototype.destroy = function(fn) {
+Poll.prototype.destroy = function(fn) {
     exports.destroy(this.id, fn);
 };
 

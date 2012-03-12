@@ -24,15 +24,14 @@ module.exports = function() {
     const app = express.createServer();
     models(app);
     config(app);
-    envirnoments(app);
+    environments(app);
     routes(app);
     errors(app);
     hooks(app);
     return app;
-}
+};
 
 /*
-
 //,_ = require('./lib/underscore/underscore')
 //, path = require('path')
 //, sys = require('sys')

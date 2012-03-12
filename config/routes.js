@@ -1,3 +1,23 @@
+/**
+ * Exports
+ */
+module.exports = function(app) {
+    var vote = require('../app/controllers/vote_controller')(app);
+    var poll = require('../app/controllers/poll_controller')(app);
+    var db = app.set('db');
+
+    app.get('/', poll.index);
+    app.get('/polls', vote.polls);
+    app.get('/votes', vote.votes);
+    app.get('/create', vote.create);
+    app.get('/update', vote.update);
+    app.get('/delete', vote.delete);
+};
+
+/**
+ * Old code
+ */
+/*
 var match = function(url,handler,method){
 
     handler = handler || "site#index";
@@ -40,3 +60,4 @@ var resource = function(resource_name){
 module.exports.draw = function(app){
     match("/");
 };
+*/
