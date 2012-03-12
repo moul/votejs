@@ -1,3 +1,18 @@
+/**
+ * Load dependencies
+ */
+const mongoose = require('mongoose');
+//require('express-mongoose');
+
+/**
+ * Exports
+ */
+module.exports = function() {
+    // Load Vote model
+    //mongoose.model('Vote', require('../app/models/vote'));
+};
+
+/*
 module.exports = Server.models = {};
 
 Server.models.autoload = function(db) {
@@ -14,3 +29,4 @@ Server.models.autoload = function(db) {
     });
     sys.puts(sys.inspect(Server.models));
 }
+*/
