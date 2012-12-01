@@ -5,6 +5,10 @@ append head
     meta(name="votejs_debug", content="true")
   if userId
     meta(name="userId", content=userId)
+  if pollId
+    meta(name="pollId", content=pollId)
+  
+
 append js_custom
   != index_assets.js('/enigma-lite')
   != index_assets.js('/app')
@@ -22,6 +26,11 @@ block page
     div#user-id-form
       input.input(type="text", placeholder="Secret")
       button.btn.submit login
+  div#new-poll.hide
+    h1 Add new poll
+    div.new-poll-form
+      input.input(type="text", placeholder="The question")
+      textarea
   div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
     h1 Public polls
     table.public-polls-list

@@ -20,7 +20,6 @@ polls = exports.polls =
             3: "Touche a ton cul"
             4: "Sens ton doigt"
             5: "La reponse D"
-            6: "test"
     3:
         question: "pile ou face ?"
         answers:

@@ -16,7 +16,8 @@
         call: (options) ->
             options.url       = "#{@options.base_url}/#{options.url}"
             options.dataType ?= 'jsonp'
-            options.userId   ?= @options.userId
+            options.data     ?= {}
+            options.data.userId   ?= @options.userId
             options.error    ?= (error) => @onError error
             $.ajax options
 
@@ -28,7 +29,15 @@
                     fn data if fn
                     
         vote: (pollId, answerId) =>
-            alert 'todo'
+            @call
+                url: "poll/#{pollId}/vote"
+                type: "POST"
+                data:
+                    answerId: answerId
+                success: (data) =>
+                    console.log data
+                    alert 'ouuuuuuuuuuuuuuuuais'
+            alert 'todo #{@options.userId}'
 
         userIdUpdate: (userId) =>
             @options.userId = userId
@@ -64,32 +73,39 @@
             @currentPoll = id
             switchTo '#poll-view'
             console.log 'switchToPoll', @polls[id]
-            
-        displayPoll: =>
-            if not @currentPoll
-                switchTo '#home'
-                return
+
+        _displayPoll: =>
             poll = @polls[@currentPoll]
             $('#poll-view h1').html poll.question
             that = @
             for key, answer of poll.answers
                 console.log answer
                 vote_button = $('<button/>').data('id', key).addClass('btn').html(answer).click ->
-                    that.vote @currentPoll, $(@).data 'id' 
+                    that.vote that.currentPoll, $(@).data 'id' 
                 $('#poll-view .answers').append vote_button
+            
+        displayPoll: =>
+            if not @currentPoll
+                switchTo '#home'
+                return
+            if not @polls[@currentPoll]
+                @fetchPoll @currentPoll, @_displayPoll
+            else
+                do @_displayPoll
 
     $(document).ready ->
         userId = $('meta[name="userId"]').attr('content') || false
-        
+        pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
         $('#list-public').click ->
-          switchTo '#public-list'
+            switchTo '#public-list'
         
         $('#user-id-form .input').val(userId) if userId
         $('#user-id-form .submit').click ->
             window.voteJs.userIdUpdate $('#user-id-form .input').val()
-        window.voteJs = new VoteJsApp
+        voteJs = window.voteJs = new VoteJsApp
             base_url: ''
             container_publicPollsList: $('.public-polls-list')
             userId: userId
+        voteJs.currentPoll = pollId 
     
 )(jQuery, document, window, console)
