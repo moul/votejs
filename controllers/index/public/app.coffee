@@ -36,8 +36,6 @@
                     answerId: answerId
                 success: (data) =>
                     console.log data
-                    alert 'ouuuuuuuuuuuuuuuuais'
-            alert 'todo #{@options.userId}'
 
         userIdUpdate: (userId) =>
             @options.userId = userId

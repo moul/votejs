@@ -22,6 +22,13 @@ exports.before = (req, res, next) ->
             return
         do next
 
+exports.create = (req, res) ->
+    res.jsonp
+        poll: req.poll
+        userId: req.body.userId
+        answerId: req.body.answerId
+    console.log req.poll
+
 exports.list_json = (req, res) ->
     args =
         votes: [42, 43]
