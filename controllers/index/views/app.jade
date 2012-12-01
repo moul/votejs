@@ -1,0 +1,31 @@
+extends layout_votejs
+
+append head
+  if debug
+    meta(name="votejs_debug", content="true")
+
+append js_custom
+  != index_assets.js('/enigma-lite')
+  != index_assets.js('/app')
+
+block header
+block footer
+
+block page
+  div#home.appPage.hide
+    h1 VoteJS
+    ul.btn-group
+      li: button#new-poll.btn    New poll
+      li: button#list-public.btn List public polls
+      li: button#join-poll.btn   Join poll with key
+  div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
+    h1 Public polls
+    table.public-polls-list
+      thead
+        tr
+          th Name
+          th Actions
+      tbody
+  div#poll-view.hide.appPage(data-switched-action="voteJs.displayPoll()")
+    h1 slaut
+

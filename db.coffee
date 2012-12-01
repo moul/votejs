@@ -10,14 +10,23 @@ polls = exports.polls =
         secret: 'salut'
     2:
         question: "quel est votre projet prefere ?"
+        dateEnd: Date.now() + 10000
         answers:
             0: "bah votejs..."
             1: "ya d'autres projets ?"
+    3:
+        question: "pile ou face ?"
+        answers:
+            0: "pile"
+            1: "face"
 
 for key, poll of polls
-    poll.private ?= false
-    poll.id ?= parseInt key
-#console.log polls
+    poll.private        ?= false
+    poll.id             ?= parseInt key
+    poll.dateEnd        ?= null
+    poll.canChangeVote  ?= true
+    poll.canViewResults ?= true
+    poll.canUnvote      ?= false
 
 cache = exports.cache =
     1:

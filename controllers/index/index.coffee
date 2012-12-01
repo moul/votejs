@@ -1,2 +1,4 @@
 exports.index = (req, res) ->
-    res.render 'index'
+    args =
+        debug: req.query.debug
+    res.render 'app', args
