@@ -3,6 +3,7 @@ db = require '../../db'
 exports.prefix = '/poll/:poll_id'
 
 exports.before = (req, res, next) ->
+    console.log 'vote_before !'
     id = req.params.vote_id
     if not id
         return do next
@@ -15,7 +16,7 @@ exports.before = (req, res, next) ->
                 }, 404
             return
         req.vote = vote
-        if req.vote.poll != req.poll.id
+        if req.vote.poll != req.poll?.id
             res.json
                 error: true
                 message: 'bad poll or vote id'
@@ -29,14 +30,13 @@ exports.list = (req, res) ->
     res.jsonp 43
 
 exports.create = (req, res) ->
-    req.poll = db.polls[req.params.poll_id]
+    console.log 'vote create !'
     db.votes[42] =
         poll: req.params.poll_id
         answer: req.body.answerId
         date: Date()
         user: req.body.userId
     res.jsonp db.votes[42]
-        
 
 exports.list_json = (req, res) ->
     req.poll = db.polls[req.params.poll_id]
