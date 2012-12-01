@@ -40,9 +40,10 @@ exports.create = (req, res) ->
 
 exports.list_json = (req, res) ->
     req.poll = db.polls[req.params.poll_id]
+    console.log 'vote list body:', req.body
     args =
         votes: getPollVotes req.poll.id
-        own: getPollOwnVote req.poll.id
+        own: getPollOwnVote req.poll.id, req.body.userId
         poll: req.poll
     res.jsonp args
 
@@ -60,6 +61,11 @@ getPollVotes = (pollId) ->
     return votes  
 
 getPollOwnVote = (pollId, userId) ->
-    ownVote = vote for key, vote of db.votes when vote.poll is pollId and vote.userId is userId
+    console.log pollId, userId
     
+    for key, vote of db.votes
+        console.log vote
+        if vote.userId is parseInt(userId) && vote.poll is parseInt(pollId)
+            console.log 'user Found'
+            ownVote = vote
     return ownVote || false

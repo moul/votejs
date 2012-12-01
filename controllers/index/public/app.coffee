@@ -20,6 +20,7 @@
             options.data     ?= {}
             options.data.userId   ?= @options.userId
             options.error    ?= (error) => @onError error
+            console.log 'call param', options
             $.ajax options
 
         fetchPoll: (id, fn = null) =>
