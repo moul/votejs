@@ -42,13 +42,17 @@ cache = exports.cache =
 
 votes = exports.votes =
     1:
-        poll: 1
+        poll: 2
         date: Date(345678914)
         answer: 0
+        userId: 1
     2:
-        poll: 1
+        poll: 2
         answer: 2
+        userId: 2
         date: Date(1232435)
     3:
-        poll: 2
+        poll: 3
         answer: 0
+        userId: 1
+        date: Date(1232435)

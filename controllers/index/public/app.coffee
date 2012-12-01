@@ -4,6 +4,7 @@
         constructor: (@options) ->
             do @handleOptions
             @polls = {}
+            @pollVotes = {}
             @publicPolls = []
             @currentPoll = null
 
@@ -26,6 +27,13 @@
                 url: "poll/#{id}/json"
                 success: (data) =>
                     @polls[data.id] = data
+                    fn data if fn
+
+        fetchPollVotes: (id, fn = null) =>
+            @call
+                url: "poll/#{id}/votes/json"
+                success: (data) =>
+                    @pollVotes[id] = data
                     fn data if fn
                     
         vote: (pollId, answerId) =>
@@ -81,7 +89,11 @@
                 vote_button = $('<button/>').data('id', key).addClass('btn').html(answer).click ->
                     that.vote that.currentPoll, $(@).data 'id' 
                 $('#poll-view .answers').append vote_button
-            
+            @fetchPollVotes @currentPoll, @displayPollVotes
+
+        displayPollVotes: =>
+            console.log @pollVotes[@currentPoll]
+        
         displayPoll: =>
             if not @currentPoll
                 switchTo '#home'
