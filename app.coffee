@@ -6,7 +6,8 @@ tapas = require('tapas')(config.tapas).app()
 # clear terminal
 process.stdout.write '\u001B[2J\u001B[0;0f'
 
-tapas.autodiscover './controllers'
+tapas.autodiscover './controllers',
+    order: ['poll', 'vote']
 
 #tapas.app.set 'jsonp callback', true
 

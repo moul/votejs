@@ -10,6 +10,7 @@ getPolls = ->
     return polls
 
 exports.before = (req, res, next) ->
+    console.log 'poll before !'
     id = req.params.poll_id
     if not id
         return do next
