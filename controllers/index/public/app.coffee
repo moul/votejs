@@ -37,7 +37,7 @@
                     @pollVotes[id] = data
                     fn data if fn
                     
-        vote: (pollId, answerId) =>
+        vote: (pollId, answerId, fn = null) =>
             @call
                 url: "poll/#{pollId}/vote"
                 type: "POST"
@@ -45,6 +45,7 @@
                     answerId: answerId
                 success: (data) =>
                     console.log data
+                    fn data if fn
 
         userIdUpdate: (userId) =>
             @options.userId = userId
@@ -88,12 +89,20 @@
             for key, answer of poll.answers
                 console.log answer
                 vote_button = $('<button/>').data('id', key).addClass('btn').html(answer).click ->
-                    that.vote that.currentPoll, $(@).data 'id' 
+                    that.vote that.currentPoll, $(@).data('id'), that.updatePollVotes
                 $('#poll-view .answers').append vote_button
             @fetchPollVotes @currentPoll, @displayPollVotes
+            
+        updatePollVotes: =>
+            if @currentPoll
+                @fetchPollVotes @currentPoll, @displayPollVotes
 
         displayPollVotes: =>
-            console.log @pollVotes[@currentPoll]
+            console.log "display poll votes", @pollVotes[@currentPoll]
+            $('#poll-view .stats').empty()
+            for answerId, answerCount of @pollVotes[@currentPoll].votes
+                answer = @polls[@currentPoll].answers[answerId]
+                $('#poll-view .stats').append "<div>#{answer} : #{answerCount}</div>"
         
         displayPoll: =>
             if not @currentPoll
@@ -117,6 +126,7 @@
             base_url: ''
             container_publicPollsList: $('.public-polls-list')
             userId: userId
-        voteJs.currentPoll = pollId 
+        voteJs.currentPoll = pollId
+        setInterval voteJs.updatePollVotes, 1000
     
 )(jQuery, document, window, console)

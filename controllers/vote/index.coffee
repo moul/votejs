@@ -31,7 +31,10 @@ exports.list = (req, res) ->
 
 exports.create = (req, res) ->
     console.log 'vote create !'
-    db.votes[42] =
+    max  = 0
+    max = Math.max max, index for index, vote of db.votes
+    
+    db.votes[max + 1] =
         poll: req.params.poll_id
         answer: req.body.answerId
         date: Date()
@@ -40,10 +43,10 @@ exports.create = (req, res) ->
 
 exports.list_json = (req, res) ->
     req.poll = db.polls[req.params.poll_id]
-    console.log 'vote list body:', req.body
+    console.log 'vote list body:', req.query
     args =
         votes: getPollVotes req.poll.id
-        own: getPollOwnVote req.poll.id, req.body.userId
+        own: getPollOwnVote req.poll.id, req.query.userId
         poll: req.poll
     res.jsonp args
 
@@ -56,8 +59,9 @@ exports.show_json = (req, res) ->
 getPollVotes = (pollId) ->
     #poll = db.polls[req.params.poll_id]
     votes = {}
-    votes[key] = vote for key, vote of db.votes when parseInt(vote.poll) is parseInt(pollId)
-    
+    for key, vote of db.votes when parseInt(vote.poll) is parseInt(pollId)
+        votes[vote.answer] = votes[vote.answer] || 0
+        votes[vote.answer]++
     return votes  
 
 getPollOwnVote = (pollId, userId) ->

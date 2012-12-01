@@ -48,10 +48,20 @@ votes = exports.votes =
         userId: 1
     2:
         poll: 2
-        answer: 2
+        answer: 0
         userId: 2
         date: Date(1232435)
     3:
+        poll: 2
+        answer: 2
+        userId: 3
+        date: Date(1232435)
+    4:
+        poll: 2
+        answer: 2
+        userId: 4
+        date: Date(1232435)
+    5:
         poll: 3
         answer: 0
         userId: 1
