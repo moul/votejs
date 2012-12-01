@@ -3,7 +3,7 @@ db = require '../../db'
 getPolls = ->
     polls = []
     for poll_id, poll of db.polls
-        if poll.public
+        if not poll.private
             polls.push {id: poll.id, question: poll.question}
     return polls
 
@@ -18,6 +18,12 @@ exports.before = (req, res, next) ->
                 error: true
                 message: 'Poll not found'
                 }, 404
+            return
+        if poll.private and poll.secret != req.query.secret
+            res.json {
+                error: true
+                message: 'Poll is private'
+                }, 403
             return
         req.poll = poll
         do next
