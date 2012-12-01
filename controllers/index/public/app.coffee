@@ -36,7 +36,7 @@
                 success: (data) =>
                     @pollVotes[id] = data
                     fn data if fn
-                    
+
         vote: (pollId, answerId, fn = null) =>
             @call
                 url: "poll/#{pollId}/vote"
@@ -50,7 +50,7 @@
         userIdUpdate: (userId) =>
             @options.userId = userId
             console.log "Logged as #{userId}"
-                
+
         refreshPublicList: (fn = null) =>
             @call
                 url: "polls/json"
@@ -92,7 +92,7 @@
                     that.vote that.currentPoll, $(@).data('id'), that.updatePollVotes
                 $('#poll-view .answers').append vote_button
             @fetchPollVotes @currentPoll, @displayPollVotes
-            
+
         updatePollVotes: =>
             if @currentPoll
                 @fetchPollVotes @currentPoll, @displayPollVotes
@@ -103,7 +103,7 @@
             for answerId, answerCount of @pollVotes[@currentPoll].votes
                 answer = @polls[@currentPoll].answers[answerId]
                 $('#poll-view .stats').append "<div>#{answer} : #{answerCount}</div>"
-        
+
         displayPoll: =>
             if not @currentPoll
                 switchTo '#home'
@@ -118,7 +118,7 @@
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
         $('#list-public').click ->
             switchTo '#public-list'
-        
+
         $('#user-id-form .input').val(userId) if userId
         $('#user-id-form .submit').click ->
             window.voteJs.userIdUpdate $('#user-id-form .input').val()
@@ -128,5 +128,5 @@
             userId: userId
         voteJs.currentPoll = pollId
         setInterval voteJs.updatePollVotes, 1000
-    
+
 )(jQuery, document, window, console)
