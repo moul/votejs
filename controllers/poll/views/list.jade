@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1 Polls
+  ul.polls-list
+  for poll in polls
+    li
+      a(href="poll/#{poll.id}")= poll.question

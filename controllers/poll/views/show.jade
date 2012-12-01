@@ -1,0 +1,8 @@
+extends poll_layout
+
+block content
+  h1= poll.question
+  ul.ansers
+  for answer in poll.answers
+    li= answer
+
