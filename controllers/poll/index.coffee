@@ -4,7 +4,9 @@ getPolls = ->
     polls = []
     for poll_id, poll of db.polls
         if not poll.private
-            polls.push {id: poll.id, question: poll.question}
+            polls.push
+                id: poll.id
+                question: poll.question
     return polls
 
 exports.before = (req, res, next) ->

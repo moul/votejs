@@ -3,7 +3,8 @@ extends layout_votejs
 append head
   if debug
     meta(name="votejs_debug", content="true")
-
+  if userId
+    meta(name="userId", content=userId)
 append js_custom
   != index_assets.js('/enigma-lite')
   != index_assets.js('/app')
@@ -18,6 +19,9 @@ block page
       li: button#new-poll.btn    New poll
       li: button#list-public.btn List public polls
       li: button#join-poll.btn   Join poll with key
+    div#user-id-form
+      input.input(type="text", placeholder="Secret")
+      button.btn.submit login
   div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
     h1 Public polls
     table.public-polls-list
@@ -27,5 +31,5 @@ block page
           th Actions
       tbody
   div#poll-view.hide.appPage(data-switched-action="voteJs.displayPoll()")
-    h1 slaut
-
+    h1 One poll
+    div.answers

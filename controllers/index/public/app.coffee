@@ -16,6 +16,7 @@
         call: (options) ->
             options.url       = "#{@options.base_url}/#{options.url}"
             options.dataType ?= 'jsonp'
+            options.userId   ?= @options.userId
             options.error    ?= (error) => @onError error
             $.ajax options
 
@@ -25,7 +26,14 @@
                 success: (data) =>
                     @polls[data.id] = data
                     fn data if fn
+                    
+        vote: (pollId, answerId) =>
+            alert 'todo'
 
+        userIdUpdate: (userId) =>
+            @options.userId = userId
+            console.log "Logged as #{userId}"
+                
         refreshPublicList: (fn = null) =>
             @call
                 url: "polls/json"
@@ -35,7 +43,7 @@
 
     class VoteJsApp extends VoteJS
         handleOptions: =>
-            console.log 'cool'
+            @userIdUpdate @options.userId if @options.userId
             super
 
         onPublicPollsListUpdate: =>
@@ -56,20 +64,32 @@
             @currentPoll = id
             switchTo '#poll-view'
             console.log 'switchToPoll', @polls[id]
-
+            
         displayPoll: =>
             if not @currentPoll
                 switchTo '#home'
                 return
             poll = @polls[@currentPoll]
             $('#poll-view h1').html poll.question
+            that = @
+            for key, answer of poll.answers
+                console.log answer
+                vote_button = $('<button/>').data('id', key).addClass('btn').html(answer).click ->
+                    that.vote @currentPoll, $(@).data 'id' 
+                $('#poll-view .answers').append vote_button
 
     $(document).ready ->
+        userId = $('meta[name="userId"]').attr('content') || false
+        
         $('#list-public').click ->
           switchTo '#public-list'
-
+        
+        $('#user-id-form .input').val(userId) if userId
+        $('#user-id-form .submit').click ->
+            window.voteJs.userIdUpdate $('#user-id-form .input').val()
         window.voteJs = new VoteJsApp
             base_url: ''
             container_publicPollsList: $('.public-polls-list')
-
+            userId: userId
+    
 )(jQuery, document, window, console)
