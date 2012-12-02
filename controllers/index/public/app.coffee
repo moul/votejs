@@ -70,8 +70,11 @@
                     if poll
                         @polls[poll.id] = poll
                         @switchToPoll(poll.id)
+                        $('#private .control-group').removeClass 'error'
+                        $('#footer .notification').html ''
                     else
                         $('#footer .notification').html '<p class="text-error">Poll not found</p>'
+                        $('#private .control-group').addClass 'error'
 
         userIdUpdate: (userId) =>
             @options.userId = userId
