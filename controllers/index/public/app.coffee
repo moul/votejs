@@ -21,7 +21,6 @@
             options.data     ?= {}
             options.data.userId   ?= @options.userId
             options.error    ?= (error) => @onError error
-            console.log 'call param', options
             $.ajax options
 
         fetchPoll: (id, fn = null) =>
@@ -53,7 +52,6 @@
                     answerId: answerId
                     pollId: pollId
                 success: (data) =>
-                    console.log data
                     fn data if fn
 
         userIdUpdate: (userId) =>
@@ -78,8 +76,7 @@
             setInterval voteJs.updatePollVotes, 1000
 
         onPublicPollsListUpdate: =>
-            console.log 'test'
-            console.log @publicPolls
+            @options.container_publicPollsList.empty()
             for poll in @publicPolls
                 row = $('<tr/>')
                 row.append $('<td/>').html poll.question
@@ -94,14 +91,14 @@
         switchToPoll: (id) =>
             @currentPoll = id
             switchTo '#poll-view'
-            console.log 'switchToPoll', @polls[id]
 
         _displayPoll: =>
+            do @initGraph
             poll = @polls[@currentPoll]
             $('#poll-view h1').html poll.question
             that = @
+            $('#poll-view .answers').empty()
             for key, answer of poll.answers
-                console.log answer
                 vote_button = $('<button/>').data('id', key).addClass('btn').html(answer).click ->
                     that.vote that.currentPoll, $(@).data('id'), that.updatePollVotes
                 $('#poll-view .answers').append vote_button
@@ -111,19 +108,20 @@
             if @currentPoll
                 @fetchPollVotes @currentPoll, @displayPollVotes
 
-        displayPollVotes: =>
-            console.log "display poll votes", @pollVotes[@currentPoll]
-            if not @graph? and not @graph
-                datas = {}
-                for key, answer of @polls[@currentPoll].answers
-                    datas[key] =
-                        title: answer.toString()
-                        val: 0
-                console.log 'datas', datas
-                @graph = new GraphCool
-                    container: $('#poll-view .stats')
-                    datas: datas
+        initGraph: =>
+            if @graph
+                do @graph.destruct
+                delete @graph
+            datas = {}
+            for key, answer of @polls[@currentPoll].answers
+                datas[key] =
+                    title: answer.toString()
+                    val: 0
+            @graph = new GraphCool
+                container: $('#poll-view .stats')
+                datas: datas
 
+        displayPollVotes: =>
             @graph.updateVals @pollVotes[@currentPoll]
 
         displayPoll: =>
@@ -137,24 +135,19 @@
 
     class VoteJsAppSocketIO extends VoteJsApp
         initSocket: =>
-            console.log 'io connect'
             @io = io.connect()
             @io.on 'connect', =>
                 console.log 'connected !'
             @io.on 'pollVotesUpdate', (data) =>
-                console.log data
+                console.log 'pollVotesUpdate', data
                 @pollVotes[data.pollId] = data.votes
                 do @displayPollVotes
 
         call: (options) ->
-            #url = options.url.split /\//
             options.data          ?= {}
             options.data.userId   ?= @options.userId
-            #options.data.args     ?= url[1..]
             options.data.args     ?= options.ioArgs
-            #console.log "calling #{url[0]}"
             console.log "calling #{options.ioPath}"
-            #@io.emit url[0], options.data, options.success
             @io.emit options.ioPath, options.data, options.success
 
     $(document).ready ->
@@ -162,6 +155,10 @@
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
         $('.public-list-btn').click ->
             switchTo '#public-list'
+        $('.account-btn').click ->
+            switchTo '#account'
+        $('.private-btn').click ->
+            switchTo '#private'
         $('#new-poll').click ->
             switchTo '#new-poll'
         $('#user-id-form .input').val(userId) if userId

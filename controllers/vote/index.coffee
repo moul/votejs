@@ -45,18 +45,16 @@ exports.open = (app, tapas) ->
 
 _create = (pollId, answerId, userId) ->
     console.log 'vote create !'
-    console.log userId
     max  = 0
     ownVote = ''
     ownIndex = 0
     console.log db.votes
-    for key, vote of db.votes 
+    for key, vote of db.votes
         max = Math.max max, parseInt(key)
-        if vote.userId is userId
+        if vote.userId is userId and vote.poll.toString() is pollId.toString()
             ownIndex = key
-    console.log 'index', ownIndex
-    console.log db.votes
-    if ownIndex
+    console.log ownIndex
+    if ownIndex and ownIndex != '0'
         console.log 'User already exist'
         db.votes[ownIndex].answer = answerId
     else
@@ -66,8 +64,6 @@ _create = (pollId, answerId, userId) ->
             answer: answerId
             date: Date()
             userId: userId
-    console.log db.votes
-    console.log _list pollId, userId
     io.sockets.emit 'pollVotesUpdate',
         pollId: pollId,
         votes: _list pollId, userId
@@ -102,12 +98,10 @@ getPollVotes = (pollId) ->
     for key, vote of db.votes when parseInt(vote.poll) is parseInt(pollId)
         votes[vote.answer] ?=  0
         votes[vote.answer]++
-    return votes  
+    return votes
 
 getPollOwnVote = (pollId, userId) ->
-    console.log pollId, userId
     for key, vote of db.votes
-        #console.log vote
         if vote.userId.toString() is userId.toString() && vote.poll is parseInt(pollId)
             console.log 'user Found'
             ownVote = vote

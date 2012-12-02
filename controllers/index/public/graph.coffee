@@ -7,6 +7,9 @@
             do @render
             return @
 
+        destruct: =>
+            @ul.remove()
+
         handleOptions: =>
             @datas = @options.datas
             @container = @options.container

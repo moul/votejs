@@ -26,19 +26,37 @@ block page
       .brand vote bien super azerty
       .pull-right
         .btn-group
-          button.public-list-btn.btn.btn-primary Public polls
-          button.new-poll.btn.btn                New poll
-          button.join-poll-btn.btn               Join poll with key
+          button.public-list-btn.btn.btn-primary
+            i.icon-user 
+            | Polls
+          button.new-poll.btn.btn
+            i.icon-user 
+            | New
+          button.private-btn.btn
+            i.icon-user 
+            | Private
+          button.account-btn.btn
+            i.icon-user 
+            | Account
+
   div#home.appPage.hide
     h1 VoteJS
+
+  div#account.hide.appPage
+    h1 Account
     div#user-id-form
       input.input(type="text", placeholder="Secret")
       button.btn.submit login
-  div#new-poll.hide
+
+  div#private.hide.appPage
+    h1 Private
+
+  div#new-poll.hide.appPage
     h1 Add new poll
     div.new-poll-form
       input.poll-question.input(type="text", placeholder="The question")
       textarea.poll-answers
+
   div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
     h1 Public polls
     table.public-polls-list
@@ -47,6 +65,7 @@ block page
           th Name
           th Actions
       tbody
+
   div#poll-view.hide.appPage(data-switched-action="voteJs.displayPoll()")
     h1 One poll
     div.answers.btn-group
