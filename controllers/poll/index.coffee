@@ -12,7 +12,8 @@ getPolls = ->
 getPoll = (pollId) ->
     return db.polls[pollId]
 
-createPoll = (question, answers) ->
+
+createPoll = (question, answers, secret) ->
     if answers.length >= 2
         max = 0
         max = Math.max max, key for key, poll of db.polls
@@ -23,6 +24,8 @@ createPoll = (question, answers) ->
             id: max + 1
             question: question
             answers: answersTmp
+            secret: secret
+            private: if secret then true else false
         console.log db.polls
 exports.before = (req, res, next) ->
     console.log 'poll before !'
@@ -52,11 +55,19 @@ exports.open = (app, tapas) ->
             polls = getPolls()
             fn polls if fn
 
+        socket.on 'getPrivate', (data, fn = null) ->
+            for key, poll of db.polls
+                if poll.private and poll.secret is data.secret
+                    fn(poll)
+                    return
+            fn(false)
+            
         socket.on 'poll', (data, fn = null) ->
             poll = getPoll parseInt data.pollId
             fn poll if fn
+
         socket.on 'pollCreate', (data, fn = null) ->
-            createPoll data.question, data.answers
+            createPoll data.question, data.answers, data.secret
 
 ## LIST
 exports.list = (req, res) ->

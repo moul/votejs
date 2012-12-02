@@ -54,16 +54,25 @@
                 success: (data) =>
                     fn data if fn
 
-        createPoll: (question, answers, fn = null) =>
-            console.log question
-            console.log answers
+        createPoll: (poll, fn = null) =>
             @call
                 url: "poll"
                 ioPath: 'pollCreate'
                 type: 'POST'
+                data: poll
+
+        fetchPrivatePoll: (secret, fn = null) =>
+            @call
+                ioPath: 'getPrivate'
                 data:
-                    question: question
-                    answers: answers
+                    secret: secret
+                success: (poll) =>
+                    if poll
+                        @polls[poll.id] = poll
+                        @switchToPoll(poll.id)
+                    else
+                        alert 'Not found'
+
 
         userIdUpdate: (userId) =>
             @options.userId = userId
@@ -164,6 +173,7 @@
     $(document).ready ->
         userId = $('meta[name="userId"]').attr('content') || false
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
+
         $('.public-list-btn').click ->
             switchTo '#public-list'
         $('.account-btn').click ->
@@ -172,8 +182,13 @@
             switchTo '#private'
         $('.new-poll-btn').click ->
             switchTo '#new-poll'
+        $('#private .poll-secret-submit').click ->
+            voteJs.fetchPrivatePoll $('#private .poll-secret').val()
         $('.new-poll-submit').click ->
-            voteJs.createPoll $('.new-poll-form .poll-question').val(), $('.new-poll-form .poll-answers').val().split('\n') 
+            voteJs.createPoll
+                question: $('.new-poll-form .poll-question').val()
+                answers: $('.new-poll-form .poll-answers').val().split('\n')
+                secret: $('.new-poll-form .poll-secret').val()
         $('#user-id-form .input').val(userId) if userId
         $('#user-id-form .submit').click ->
             window.voteJs.userIdUpdate $('#user-id-form .input').val()
