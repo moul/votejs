@@ -50,13 +50,15 @@ block page
 
   div#private.hide.appPage
     h1 Private
-
+    input.poll-secret(type="text", placeholder="Secret")
+    button.btn.poll-secret-submit Go
   div#new-poll.hide.appPage
     h1 Add new poll
     div.new-poll-form
       input.poll-question.input(type="text", placeholder="The question")
       textarea.poll-answers
-
+      input.poll-secret.input(type="text", placeholder="Secret")
+      button.btn.new-poll-submit Add
   div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
     h1 Public polls
     table.public-polls-list
