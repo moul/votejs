@@ -53,14 +53,14 @@
                     pollId: pollId
                 success: (data) =>
                     fn data if fn
-                    
+
         createPoll: (poll, fn = null) =>
             @call
                 url: "poll"
                 ioPath: 'pollCreate'
                 type: 'POST'
                 data: poll
-        
+
         fetchPrivatePoll: (secret, fn = null) =>
             @call
                 ioPath: 'getPrivate'
@@ -72,7 +72,6 @@
                         @switchToPoll(poll.id)
                     else
                         $('#footer .notification').html '<p class="text-error">Poll not found</p>'
-                    
 
         userIdUpdate: (userId) =>
             @options.userId = userId
