@@ -162,7 +162,8 @@
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
         $('.public-list-btn').click ->
             switchTo '#public-list'
-
+        $('#new-poll').click ->
+            switchTo '#new-poll'
         $('#user-id-form .input').val(userId) if userId
         $('#user-id-form .submit').click ->
             window.voteJs.userIdUpdate $('#user-id-form .input').val()

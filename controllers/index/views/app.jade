@@ -37,8 +37,8 @@ block page
   div#new-poll.hide
     h1 Add new poll
     div.new-poll-form
-      input.input(type="text", placeholder="The question")
-      textarea
+      input.poll-question.input(type="text", placeholder="The question")
+      textarea.poll-answers
   div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
     h1 Public polls
     table.public-polls-list
