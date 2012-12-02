@@ -45,14 +45,29 @@ exports.open = (app, tapas) ->
 
 _create = (pollId, answerId, userId) ->
     console.log 'vote create !'
+    console.log userId
     max  = 0
-    max = Math.max max, index for index, vote of db.votes
-
-    db.votes[max + 1] =
-        poll: pollId
-        answer: answerId
-        date: Date()
-        user: userId
+    ownVote = ''
+    ownIndex = 0
+    console.log db.votes
+    for key, vote of db.votes 
+        max = Math.max max, parseInt(key)
+        if vote.userId is userId
+            ownIndex = key
+    console.log 'index', ownIndex
+    console.log db.votes
+    if ownIndex
+        console.log 'User already exist'
+        db.votes[ownIndex].answer = answerId
+    else
+        console.log 'new user'
+        db.votes[max + 1] =
+            poll: pollId
+            answer: answerId
+            date: Date()
+            userId: userId
+    console.log db.votes
+    console.log _list pollId, userId
     io.sockets.emit 'pollVotesUpdate',
         pollId: pollId,
         votes: _list pollId, userId
@@ -62,8 +77,11 @@ exports.create = (req, res) ->
     res.jsonp db.votes[42]
 
 _list = (pollId) ->
-    return getPollVotes pollId
-
+    value = getPollVotes pollId
+    for key, answer of db.polls[pollId].answers
+        value[key] ?= 0
+    return value
+    
 _own = (pollId, userId) ->
     return getPollOwnVote pollId, userId
 
@@ -83,7 +101,7 @@ getPollVotes = (pollId) ->
     #poll = db.polls[req.params.poll_id]
     votes = {}
     for key, vote of db.votes when parseInt(vote.poll) is parseInt(pollId)
-        votes[vote.answer] = votes[vote.answer] || 0
+        votes[vote.answer] ?=  0
         votes[vote.answer]++
     return votes  
 
@@ -91,7 +109,7 @@ getPollOwnVote = (pollId, userId) ->
     console.log pollId, userId
     for key, vote of db.votes
         #console.log vote
-        if vote.userId is parseInt(userId) && vote.poll is parseInt(pollId)
+        if vote.userId.toString() is userId.toString() && vote.poll is parseInt(pollId)
             console.log 'user Found'
             ownVote = vote
     return ownVote || false
