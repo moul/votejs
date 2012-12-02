@@ -61,6 +61,18 @@
                 type: 'POST'
                 data: poll
         
+        fetchPrivatePoll: (secret, fn = null) =>
+            @call
+                ioPath: 'getPrivate'
+                data:
+                    secret: secret
+                success: (poll) =>
+                    if poll
+                        @polls[poll.id] = poll
+                        @switchToPoll(poll.id)
+                    else
+                        alert 'Not found'
+                    
 
         userIdUpdate: (userId) =>
             @options.userId = userId
@@ -170,6 +182,8 @@
             switchTo '#private'
         $('.new-poll-btn').click ->
             switchTo '#new-poll'
+        $('#private .poll-secret-submit').click ->
+            voteJs.fetchPrivatePoll $('#private .poll-secret').val()
         $('.new-poll-submit').click ->
             voteJs.createPoll
                 question: $('.new-poll-form .poll-question').val()
