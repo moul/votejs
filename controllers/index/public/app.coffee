@@ -71,7 +71,7 @@
                         @polls[poll.id] = poll
                         @switchToPoll(poll.id)
                     else
-                        alert 'Not found'
+                        $('#footer .notification').html '<p class="text-error">Poll not found</p>'
                     
 
         userIdUpdate: (userId) =>
