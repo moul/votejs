@@ -13,15 +13,17 @@ getPoll = (pollId) ->
     return db.polls[pollId]
 
 createPoll = (question, answers) ->
-    max = 0
-    max = Math.max max, key for key, poll of db.polls
-    answersTmp = {}
-    for index, anwser in answers
-        answersTmp[index.toString] = answer
-    db.polls[max + 1] =
-        question: question
-        answers: answersTmp
-
+    if answers.length >= 2
+        max = 0
+        max = Math.max max, key for key, poll of db.polls
+        answersTmp = {}
+        for answer, index in answers
+            answersTmp[index.toString()] = answer
+        db.polls[max + 1] =
+            id: max + 1
+            question: question
+            answers: answersTmp
+        console.log db.polls
 exports.before = (req, res, next) ->
     console.log 'poll before !'
     id = req.params.poll_id
@@ -53,6 +55,8 @@ exports.open = (app, tapas) ->
         socket.on 'poll', (data, fn = null) ->
             poll = getPoll parseInt data.pollId
             fn poll if fn
+        socket.on 'pollCreate', (data, fn = null) ->
+            createPoll data.question, data.answers
 
 ## LIST
 exports.list = (req, res) ->
