@@ -61,7 +61,7 @@
             entry = @datas[key]
             entry.percent.html "#{entry.val}"
             if @max > 0
-                entry.bar.animate {'width': "#{entry.val / @max * 100}%"}
+                entry.bar.animate {'width': "#{entry.val / @max * 100}%"}, 300
             else
                 entry.bar.css 'width', 0
 
@@ -76,7 +76,7 @@
 
         goToPosition: (key, position) =>
             row = @datas[key].row
-            row.stop().animate { 'top': @positions[position].top }, 500
+            row.stop().animate { 'top': @positions[position].top }
 
         swap: (a, b) =>
             positionA = @positions[@datas[a].i]
