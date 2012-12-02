@@ -59,9 +59,9 @@
                 url: "poll"
                 ioPath: 'pollCreate'
                 type: 'POST'
-                data:
-                    poll
+                data: poll
         
+
         userIdUpdate: (userId) =>
             @options.userId = userId
             console.log "Logged as #{userId}"
@@ -90,10 +90,10 @@
                 row.append $('<td/>').html poll.question
                 actions = $('<td/>')
                 that = @
-                view_button = $('<button/>').data('id', poll.id).addClass('btn').html('view').click ->
+                view_button = $('<button/>').data('id', poll.id).addClass('btn btn-primary').html('view').click ->
                     id = parseInt $(@).data 'id'
                     that.fetchPoll id, (data) -> that.switchToPoll data.id
-                row.append view_button
+                row.append $('<td/>').html(view_button)
                 @options.container_publicPollsList.append row
 
         switchToPoll: (id) =>
@@ -168,7 +168,7 @@
             switchTo '#account'
         $('.private-btn').click ->
             switchTo '#private'
-        $('.new-poll').click ->
+        $('.new-poll-btn').click ->
             switchTo '#new-poll'
         $('.new-poll-submit').click ->
             voteJs.createPoll
@@ -180,7 +180,7 @@
             window.voteJs.userIdUpdate $('#user-id-form .input').val()
         voteJs = window.voteJs = new VoteJsAppSocketIO
             base_url: ''
-            container_publicPollsList: $('.public-polls-list')
+            container_publicPollsList: $('.public-polls-list tbody')
             userId: userId
         voteJs.currentPoll = pollId
 
