@@ -160,7 +160,7 @@
     $(document).ready ->
         userId = $('meta[name="userId"]').attr('content') || false
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
-        $('#list-public').click ->
+        $('.public-list-btn').click ->
             switchTo '#public-list'
 
         $('#user-id-form .input').val(userId) if userId

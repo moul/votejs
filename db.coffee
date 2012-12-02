@@ -25,6 +25,18 @@ polls = exports.polls =
         answers:
             0: "pile"
             1: "face"
+    4:
+        question: "combien mesure ton penis ?"
+        answers:
+            0: "oui"
+            1: "non"
+            2: "bien au contraire"
+    5:
+        question: "on mange quoi ce soir ?"
+        answers:
+            0: "des pates"
+            1: "une pizza"
+            2: "un sandwish"
 
 for key, poll of polls
     poll.private          ?= false

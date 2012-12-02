@@ -21,12 +21,16 @@ block header
 block footer
 
 block page
+  .navbar.navbar-inverse
+    .navbar-inner
+      .brand vote bien super azerty
+      .pull-right
+        .btn-group
+          button.public-list-btn.btn.btn-primary Public polls
+          button.new-poll.btn.btn                New poll
+          button.join-poll-btn.btn               Join poll with key
   div#home.appPage.hide
     h1 VoteJS
-    ul.btn-group
-      li: button#new-poll.btn    New poll
-      li: button#list-public.btn List public polls
-      li: button#join-poll.btn   Join poll with key
     div#user-id-form
       input.input(type="text", placeholder="Secret")
       button.btn.submit login
@@ -45,5 +49,5 @@ block page
       tbody
   div#poll-view.hide.appPage(data-switched-action="voteJs.displayPoll()")
     h1 One poll
-    div.answers
+    div.answers.btn-group
     div.stats

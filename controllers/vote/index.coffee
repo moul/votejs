@@ -76,19 +76,19 @@ exports.create = (req, res) ->
     _create req.params.poll_id, req.body.answerId, req.body.userId
     res.jsonp db.votes[42]
 
+getPoll = (pollId) ->
+    return db.polls[pollId]
+
 _list = (pollId) ->
     value = getPollVotes pollId
-    for key, answer of db.polls[pollId].answers
+    for key, answer of getPoll(pollId).answers
         value[key] ?= 0
     return value
-    
+
 _own = (pollId, userId) ->
     return getPollOwnVote pollId, userId
 
 exports.list_json = (req, res) ->
-    #req.poll = db.polls[req.params.poll_id]
-    #console.log 'vote list body:', req.query
-        #poll: req.poll
     res.jsonp _list req.poll.id, req.query.userId
 
 exports.show_json = (req, res) ->
@@ -98,7 +98,6 @@ exports.show_json = (req, res) ->
     res.jsonp args
 
 getPollVotes = (pollId) ->
-    #poll = db.polls[req.params.poll_id]
     votes = {}
     for key, vote of db.votes when parseInt(vote.poll) is parseInt(pollId)
         votes[vote.answer] ?=  0
