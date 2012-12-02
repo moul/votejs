@@ -9,13 +9,16 @@ getPolls = ->
                 question: poll.question
     return polls
 
+getPoll = (pollId) ->
+    return db.polls[pollId]
+
 exports.before = (req, res, next) ->
     console.log 'poll before !'
     id = req.params.poll_id
     if not id
         return do next
     process.nextTick ->
-        poll = db.polls[id]
+        poll = getPoll pollId
         if not poll
             res.json {
                 error: true
@@ -30,6 +33,16 @@ exports.before = (req, res, next) ->
             return
         req.poll = poll
         do next
+
+exports.open = (app, tapas) ->
+    tapas.io.on 'connection', (socket) ->
+        socket.on 'polls', (data, fn = null) ->
+            polls = getPolls()
+            fn polls if fn
+
+        socket.on 'poll', (data, fn = null) ->
+            poll = getPoll parseInt data.pollId
+            fn poll if fn
 
 ## LIST
 exports.list = (req, res) ->

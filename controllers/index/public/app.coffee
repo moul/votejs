@@ -5,6 +5,7 @@
             do @handleOptions
             @polls = {}
             @pollVotes = {}
+            @pollOwns = {}
             @publicPolls = []
             @currentPoll = null
 
@@ -26,6 +27,9 @@
         fetchPoll: (id, fn = null) =>
             @call
                 url: "poll/#{id}/json"
+                ioPath: 'poll'
+                data:
+                    pollId: id
                 success: (data) =>
                     @polls[data.id] = data
                     fn data if fn
@@ -33,6 +37,9 @@
         fetchPollVotes: (id, fn = null) =>
             @call
                 url: "poll/#{id}/votes/json"
+                ioPath: 'pollVotes'
+                data:
+                    pollId: id
                 success: (data) =>
                     @pollVotes[id] = data
                     fn data if fn
@@ -40,9 +47,11 @@
         vote: (pollId, answerId, fn = null) =>
             @call
                 url: "poll/#{pollId}/vote"
+                ioPath: 'pollVoteCreate'
                 type: "POST"
                 data:
                     answerId: answerId
+                    pollId: pollId
                 success: (data) =>
                     console.log data
                     fn data if fn
@@ -53,6 +62,7 @@
 
         refreshPublicList: (fn = null) =>
             @call
+                ioPath: 'polls'
                 url: "polls/json"
                 success: (@publicPolls) =>
                     do @onPublicPollsListUpdate
@@ -60,8 +70,12 @@
 
     class VoteJsApp extends VoteJS
         handleOptions: =>
+            do @initSocket
             @userIdUpdate @options.userId if @options.userId
             super
+
+        initSocket: =>
+            setInterval voteJs.updatePollVotes, 1000
 
         onPublicPollsListUpdate: =>
             console.log 'test'
@@ -100,7 +114,7 @@
         displayPollVotes: =>
             console.log "display poll votes", @pollVotes[@currentPoll]
             $('#poll-view .stats').empty()
-            for answerId, answerCount of @pollVotes[@currentPoll].votes
+            for answerId, answerCount of @pollVotes[@currentPoll]
                 answer = @polls[@currentPoll].answers[answerId]
                 $('#poll-view .stats').append "<div>#{answer} : #{answerCount}</div>"
 
@@ -113,6 +127,28 @@
             else
                 do @_displayPoll
 
+    class VoteJsAppSocketIO extends VoteJsApp
+        initSocket: =>
+            console.log 'io connect'
+            @io = io.connect()
+            @io.on 'connect', =>
+                console.log 'connected !'
+            @io.on 'pollVotesUpdate', (data) =>
+                console.log data
+                @pollVotes[data.pollId] = data.votes
+                do @displayPollVotes
+
+        call: (options) ->
+            #url = options.url.split /\//
+            options.data          ?= {}
+            options.data.userId   ?= @options.userId
+            #options.data.args     ?= url[1..]
+            options.data.args     ?= options.ioArgs
+            #console.log "calling #{url[0]}"
+            console.log "calling #{options.ioPath}"
+            #@io.emit url[0], options.data, options.success
+            @io.emit options.ioPath, options.data, options.success
+
     $(document).ready ->
         userId = $('meta[name="userId"]').attr('content') || false
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
@@ -122,11 +158,10 @@
         $('#user-id-form .input').val(userId) if userId
         $('#user-id-form .submit').click ->
             window.voteJs.userIdUpdate $('#user-id-form .input').val()
-        voteJs = window.voteJs = new VoteJsApp
+        voteJs = window.voteJs = new VoteJsAppSocketIO
             base_url: ''
             container_publicPollsList: $('.public-polls-list')
             userId: userId
         voteJs.currentPoll = pollId
-        setInterval voteJs.updatePollVotes, 1000
 
 )(jQuery, document, window, console)

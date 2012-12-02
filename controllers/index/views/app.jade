@@ -7,9 +7,9 @@ append head
     meta(name="userId", content=userId)
   if pollId
     meta(name="pollId", content=pollId)
-  
 
 append js_custom
+  script(type="text/javascript", src="/socket.io/socket.io.js")
   != index_assets.js('/enigma-lite')
   != index_assets.js('/app')
 

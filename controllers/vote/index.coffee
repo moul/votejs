@@ -29,26 +29,49 @@ exports.show = (req, res) ->
 exports.list = (req, res) ->
     res.jsonp 43
 
-exports.create = (req, res) ->
+io = null
+
+exports.open = (app, tapas) ->
+    io = tapas.io
+    io.on 'connection', (socket) ->
+        socket.on 'pollVotes', (data, fn = null) ->
+            fn _list data.pollId
+
+        socket.on 'pollOwnVote', (data, fn = null) ->
+            fn _own data.pollId
+
+        socket.on 'pollVoteCreate', (data, fn = null) ->
+            _create data.pollId, data.answerId, data.userId
+
+_create = (pollId, answerId, userId) ->
     console.log 'vote create !'
     max  = 0
     max = Math.max max, index for index, vote of db.votes
-    
+
     db.votes[max + 1] =
-        poll: req.params.poll_id
-        answer: req.body.answerId
+        poll: pollId
+        answer: answerId
         date: Date()
-        user: req.body.userId
+        user: userId
+    io.sockets.emit 'pollVotesUpdate',
+        pollId: pollId,
+        votes: _list pollId, userId
+
+exports.create = (req, res) ->
+    _create req.params.poll_id, req.body.answerId, req.body.userId
     res.jsonp db.votes[42]
 
+_list = (pollId) ->
+    return getPollVotes pollId
+
+_own = (pollId, userId) ->
+    return getPollOwnVote pollId, userId
+
 exports.list_json = (req, res) ->
-    req.poll = db.polls[req.params.poll_id]
-    console.log 'vote list body:', req.query
-    args =
-        votes: getPollVotes req.poll.id
-        own: getPollOwnVote req.poll.id, req.query.userId
-        poll: req.poll
-    res.jsonp args
+    #req.poll = db.polls[req.params.poll_id]
+    #console.log 'vote list body:', req.query
+        #poll: req.poll
+    res.jsonp _list req.poll.id, req.query.userId
 
 exports.show_json = (req, res) ->
     args =
@@ -66,9 +89,8 @@ getPollVotes = (pollId) ->
 
 getPollOwnVote = (pollId, userId) ->
     console.log pollId, userId
-    
     for key, vote of db.votes
-        console.log vote
+        #console.log vote
         if vote.userId is parseInt(userId) && vote.poll is parseInt(pollId)
             console.log 'user Found'
             ownVote = vote
