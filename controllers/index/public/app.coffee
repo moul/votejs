@@ -113,10 +113,18 @@
 
         displayPollVotes: =>
             console.log "display poll votes", @pollVotes[@currentPoll]
-            $('#poll-view .stats').empty()
-            for answerId, answerCount of @pollVotes[@currentPoll]
-                answer = @polls[@currentPoll].answers[answerId]
-                $('#poll-view .stats').append "<div>#{answer} : #{answerCount}</div>"
+            if not @graph? and not @graph
+                datas = {}
+                for key, answer of @polls[@currentPoll].answers
+                    datas[key] =
+                        title: answer.toString()
+                        val: 0
+                console.log 'datas', datas
+                @graph = new GraphCool
+                    container: $('#poll-view .stats')
+                    datas: datas
+
+            @graph.updateVals @pollVotes[@currentPoll]
 
         displayPoll: =>
             if not @currentPoll

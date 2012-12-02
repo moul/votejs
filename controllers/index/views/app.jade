@@ -11,7 +11,11 @@ append head
 append js_custom
   script(type="text/javascript", src="/socket.io/socket.io.js")
   != index_assets.js('/enigma-lite')
+  != index_assets.js('/graph')
   != index_assets.js('/app')
+
+append css_custom
+  != index_assets.css('/graph')
 
 block header
 block footer
