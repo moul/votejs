@@ -23,19 +23,19 @@ block footer
 block page
   .navbar.navbar-inverse
     .navbar-inner
-      .brand vote bien super azerty
+      .brand Vote
       .pull-right
         .btn-group
           button.public-list-btn.btn.btn-primary
-            i.icon-user 
+            i.icon-bar-chart 
             | Polls
-          button.new-poll.btn.btn
-            i.icon-user 
+          button.new-poll-btn.btn.btn-inverse
+            i.icon-plus 
             | New
-          button.private-btn.btn
-            i.icon-user 
+          button.private-btn.btn.btn-inverse
+            i.icon-key 
             | Private
-          button.account-btn.btn
+          button.account-btn.btn.btn-inverse
             i.icon-user 
             | Account
 
@@ -59,7 +59,7 @@ block page
 
   div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
     h1 Public polls
-    table.public-polls-list
+    table.public-polls-list.table.table-striped
       thead
         tr
           th Name
