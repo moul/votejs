@@ -55,7 +55,18 @@
                 success: (data) =>
                     console.log data
                     fn data if fn
-
+                    
+        createPoll: (question, answers, fn = null) =>
+            console.log question
+            console.log answers
+            @call
+                url: "poll"
+                ioPath: 'pollCreate'
+                type: 'POST'
+                data:
+                    question: question
+                    answers: answers
+        
         userIdUpdate: (userId) =>
             @options.userId = userId
             console.log "Logged as #{userId}"
@@ -160,10 +171,14 @@
     $(document).ready ->
         userId = $('meta[name="userId"]').attr('content') || false
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
+        ##Change in app.jade:
+        $('.new-poll-form').append('<button class="btn new-poll-submit">Add</button>')
         $('.public-list-btn').click ->
             switchTo '#public-list'
-        $('#new-poll').click ->
+        $('.new-poll').click ->
             switchTo '#new-poll'
+        $('.new-poll-submit').click ->
+            voteJs.createPoll $('.new-poll-form .poll-question').val(), $('.new-poll-form .poll-answers').val().split('\n') 
         $('#user-id-form .input').val(userId) if userId
         $('#user-id-form .submit').click ->
             window.voteJs.userIdUpdate $('#user-id-form .input').val()
