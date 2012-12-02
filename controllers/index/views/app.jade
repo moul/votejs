@@ -44,18 +44,30 @@ block page
 
   div#account.hide.appPage
     h1 Account
-    div#user-id-form
-      input.input(type="text", placeholder="Secret")
-      button.btn.submit login
+    div#user-id-form.form-horizontal
+      .control-group
+        label.control-label Username
+        .controls
+          input.input(type="text", placeholder="login")
+      .form-actions
+        button.btn.submit.btn-primary login
 
   div#private.hide.appPage
     h1 Private
 
   div#new-poll.hide.appPage
     h1 Add new poll
-    div.new-poll-form
-      input.poll-question.input(type="text", placeholder="The question")
-      textarea.poll-answers
+    div.new-poll-form.form-horizontal
+      .control-group
+        label.control-label Question
+        .controls
+          input.poll-question.input(type="text", placeholder="What is your favorite color ?")
+      .control-group
+        label.control-label Answers
+        .controls
+          textarea.poll-answers
+      .form-actions
+        button.btn.new-poll-submit.btn-primary Add
 
   div#public-list.hide.appPage(data-switched-action="voteJs.refreshPublicList()")
     h1 Public polls

@@ -164,8 +164,6 @@
     $(document).ready ->
         userId = $('meta[name="userId"]').attr('content') || false
         pollId = parseInt($('meta[name="pollId"]').attr('content')) || false
-        ##Change in app.jade:
-        $('.new-poll-form').append('<button class="btn new-poll-submit">Add</button>')
         $('.public-list-btn').click ->
             switchTo '#public-list'
         $('.account-btn').click ->
