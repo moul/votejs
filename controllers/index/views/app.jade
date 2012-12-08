@@ -7,6 +7,8 @@ append head
     meta(name="userId", content=userId)
   if pollId
     meta(name="pollId", content=pollId)
+  if iourl
+    meta(name="iourl", content=iourl)
 
 append js_custom
   script(type="text/javascript", src="/socket.io/socket.io.js")

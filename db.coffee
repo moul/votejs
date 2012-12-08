@@ -1,3 +1,5 @@
+exports.iourl = 'http://dev.onouo.com:9144'
+
 polls = exports.polls =
     1:
         question: "quel age as-tu ?"

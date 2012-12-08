@@ -157,7 +157,8 @@
 
     class VoteJsAppSocketIO extends VoteJsApp
         initSocket: =>
-            @io = io.connect()
+            iourl = $('meta[name="iourl"]').attr('content') || null
+            @io = io.connect iourl
             @io.on 'connect', =>
                 console.log 'connected !'
             @io.on 'pollVotesUpdate', (data) =>
