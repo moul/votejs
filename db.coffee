@@ -16,24 +16,14 @@ polls = exports.polls =
         registeredUserOnly: true
         allowedUsers: ['azerty', 'bidule', 'salut']
         answers:
-            0: "bah votejs..."
-            1: "ya d'autres projets ?"
-            2: "Une pomme"
-            3: "Touche a ton cul"
-            4: "Sens ton doigt"
-            5: "La reponse D"
+            0: "VoteJS"
+            1: "il y a vraiment d'autres projets ?"
     3:
         question: "pile ou face ?"
         answers:
             0: "pile"
             1: "face"
     4:
-        question: "combien mesure ton penis ?"
-        answers:
-            0: "oui"
-            1: "non"
-            2: "bien au contraire"
-    5:
         question: "on mange quoi ce soir ?"
         answers:
             0: "des pates"
@@ -41,12 +31,12 @@ polls = exports.polls =
             2: "un sandwish"
 
 for key, poll of polls
-    poll.private          ?= false
-    poll.id               ?= parseInt key
-    poll.dateEnd          ?= null
-    poll.canChangeVote    ?= true
-    poll.canViewResults   ?= true
-    poll.canUnvote        ?= false
+    poll.private            ?= false
+    poll.id                 ?= parseInt key
+    poll.dateEnd            ?= null
+    poll.canChangeVote      ?= true
+    poll.canViewResults     ?= true
+    poll.canUnvote          ?= false
     poll.registeredUserOnly ?= false
 
 cache = exports.cache =
